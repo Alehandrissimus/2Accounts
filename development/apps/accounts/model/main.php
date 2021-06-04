@@ -189,7 +189,7 @@ class Main
 		switch ($type) {
 			case 'user': 
 				$user = new User(guid: $user);
-				$result = $user->search($user->guid);
+				$result = [$user->search($user->guid)];
 				break;
 			case 'person': 
 				$user = new User(guid: $user);
@@ -227,7 +227,7 @@ class Main
 				break;
 			case 'person':
 				$person = new Person();
-				$result['result'] = $person->edit($data);
+				$result['result'] = $person->edit($owner, $data);
 				break;
 			default: throw new \Exception("REQUEST_UNKNOWN");
 		}
@@ -236,15 +236,20 @@ class Main
 	}
 
 
-	public function accountlink(String $person, String $guid): ?array {
+	public function accountlink(String $person, String $guid, String $type): ?array {
 		$result = [];
 		
-		$user = new User(guid: $guid);
-		$result['result'] = $user->edit(
-			[
-				'PersonID' => $person
-			]
-		);
+		switch($type) {
+			case 'link':
+				$teams = new Teams();
+				$teams->save(personId: $person, teamsId: $guid);
+				$result = [true];	
+				break;
+			default: 
+				$user = new User(guid: $guid);
+				$result['result'] = $user->edit(['PersonID' => $person]);
+				break;
+		}
 
 		return $result;
 	}
@@ -255,7 +260,7 @@ class Main
 		$db = $this->db;
 		
 		$groups = Group::loadGroups();
-		$persons = Person::load();
+		$persons = Person::searchby();
 
 		if(count($groups) == 1) {
 			return ["wtf"];
@@ -263,15 +268,16 @@ class Main
 		foreach($groups as $group) {
 			$count = 0;
 			foreach($persons as $person) {
-				if($group->id == $person->party) {
+				if($group->nameGroup == $person->party) {
 					$count++;
-					$result[$group->name . " " . $person->department] = $count; 
+					$result[$group->nameGroup . " " . $group->nameDepartment] = $count; 
 				}
 			}
 		}
 
 		return $result;
 	}
+
 
 
 	public function accountrefresh(): ?array {
@@ -283,6 +289,10 @@ class Main
     	));
   		// Getting app token
 		$params = [
+    		'grant_type' => 'client_credentials',
+    		'client_id' => 'b12ee5c0-54af-4b8c-afaa-f55aafdaa164',
+    		'scope' => 'https://graph.microsoft.com/.default',
+    		'client_secret' => 'Wauu3~~YpoLo89~X-tX8~kwX27e5_5E16X'
 		];
     
 		$response = $this->request('login.microsoftonline.com/8efef98e-4b58-4293-8fbe-408a6973145a/oauth2/v2.0/token', $params);
@@ -306,6 +316,11 @@ class Main
 		}
 
 		$params = [
+  			'grant_type' => 'refresh_token',
+  			'client_id' => 'b12ee5c0-54af-4b8c-afaa-f55aafdaa164',
+  			'scope' => 'offline_access User.ReadWrite User.ReadWrite.All User.ManageIdentities.All Directory.ReadWrite.All Directory.AccessAsUser.All',
+  			'client_secret' => 'Wauu3~~YpoLo89~X-tX8~kwX27e5_5E16X',
+  			'refresh_token' => $refresh
 		];
 
 		$response = $this->request('login.microsoftonline.com/8efef98e-4b58-4293-8fbe-408a6973145a/oauth2/v2.0/token', $params);
@@ -318,8 +333,25 @@ class Main
 			-> where(['Sync'=> ['name' => 'refresh']])
 			-> run();
 		
-		return $response;
+		return [true];
 	}
+
+
+	public function accounttoken() {
+		$db = $this->db;
+
+		
+		foreach ($db -> select([
+			'Sync' => []
+		])->where([
+			'Sync' => ['name' => 'application']
+		])->many(1) as $token) {
+			$refresh = $token['token'];
+		}
+
+		return ['token' => $refresh];
+	}
+
 
 
 	public function __construct() {

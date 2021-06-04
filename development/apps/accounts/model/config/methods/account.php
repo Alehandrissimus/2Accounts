@@ -106,6 +106,12 @@ $methods = [
                 'required' => true,
                 'default' => ''
             ],
+            [
+                'name' => 'type',
+				'source' => 'p',
+                'required' => false,
+                'default' => ''
+            ],
         ]
     ],
     'groups' => [
@@ -114,6 +120,11 @@ $methods = [
         ]
     ],
     'refresh' => [
+        'params' => [
+            
+        ]
+    ],
+    'token' => [
         'params' => [
             
         ]

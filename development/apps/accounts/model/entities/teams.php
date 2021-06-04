@@ -115,7 +115,7 @@ class Teams
 	}
 
 	public function save(String $personId, String $teamsId):self {
-		$db = $this->db;
+		$db = self::getDB();
 		$db->insert([
 			'Teams' => [ 
 				'personId' => $personId,

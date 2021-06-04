@@ -38,7 +38,9 @@ class Person
 					}
 				}
 
-				$result[] = new $class($user['id'], $user['PersonId'], $user['name'], $user['middlename'], $user['surname'], $party, $department);
+				if($user['isLecturer'] == 0) {$lecturer = false;} else {$lecturer = true;}
+				
+				$result[] = new $class($user['id'], $user['PersonId'], $user['name'], $user['middlename'], $user['surname'], $party, $department, $lecturer, $user['isFound']);
 		}
 
 		return $limit == 1 ? (isset($result[0]) ? $result[0] : null) : $result;
@@ -67,7 +69,9 @@ class Person
 					}
 				}
 
-				$result[] = new $class($user['id'], $user['PersonId'], $user['name'], $user['middlename'], $user['surname'], $party, $department);
+				if($user['isLecturer'] == 0) {$lecturer = false;} else {$lecturer = true;}
+
+				$result[] = new $class($user['id'], $user['PersonId'], $user['name'], $user['middlename'], $user['surname'], $party, $department, $lecturer, $user['isFound']);
 		}
 
 		return $limit == 1 ? (isset($result[0]) ? $result[0] : null) : $result;
@@ -114,11 +118,10 @@ class Person
 	}
 
 	//TODO
-	public function edit(array $data): bool {
-		$db = $this->db;
-		return false;
+	public function edit(String $guid, array $data): bool {
+		$db = self::getDB();
 		$db -> update('Person', $data)
-				-> where(['Person'=> ['guid' => $this->guid]])
+				-> where(['Person'=> ['PersonId' => $guid]])
 				-> run();
 
 		return true;
@@ -153,7 +156,8 @@ class Person
 		public ?String $middlename = null, 
 		public ?String $party = null,
 		public ?String $department = null,
-		public bool $isLecturer = false
+		public bool $isLecturer = false,
+		public ?String $isFound = null,
 		) {
 		//$this->db = $this->getDB();
 	}

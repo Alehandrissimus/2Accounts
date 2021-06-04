@@ -34,6 +34,5 @@ class Button
         public String $message = ''
 		) 
 		{
-		$this->db = $this->getDB();
 	}
 }

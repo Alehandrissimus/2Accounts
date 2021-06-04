@@ -35,6 +35,5 @@ class Group
 		public String $nameDepartment = ''
 		) 
 		{
-		$this->db = $this->getDB();
 	}
 }

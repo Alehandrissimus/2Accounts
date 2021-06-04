@@ -29,7 +29,7 @@ class User
 	}
 
 	public function save():self {
-		$db = $this->db;
+		$db = self::getDB();
 		if (!$this->id) {
 			$this->id = $db -> insert([
 				'Users' => [ 'name' => null, ]
@@ -51,7 +51,7 @@ class User
 
 
 	public function edit(array $data): bool {
-		$db = $this->db;
+		$db = self::getDB();
 		$db -> update('Users', $data)
 				-> where(['Users'=> ['guid' => $this->guid]])
 				-> run();
@@ -67,12 +67,7 @@ class User
 		public ?String $middlename = '',
 		public ?String $surname = '',
 		public ?String $personId = '',
-		public ?Int $message = null, 
-		public ?Int $service = null, 
-		public String|Array|Null $input = '',
 		) 
 		{
-		$this->db = $this->getDB();
-		$this->input = $this->input ? json_decode($this->input, true) : [];
 	}
 }

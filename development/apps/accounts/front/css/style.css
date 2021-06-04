@@ -1,0 +1,16 @@
+.opu {
+  background-color:#2b4e84;
+}
+.truncate {
+  overflow: hidden;
+}
+.carousel-control-prev-icon {
+  background-image: url(./../img/prev.png) !important;
+}
+.carousel-control-next-icon {
+  background-image: url(./../img/next.png) !important;
+}
+.center {
+  display: flex !important;
+  justify-content: space-evenly !important;
+}
