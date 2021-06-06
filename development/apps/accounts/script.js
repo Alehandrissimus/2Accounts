@@ -91,7 +91,7 @@ function addButton(parent, direction) {
 
 //работает, но (не опять, а снова)
 //токен нужно принимать, а этот метод не работает
-//и еще нужно кодировать данные в урлу, а не в тело запроса
+//и еще нужно кодировать данные в урлу, а не в тело запроса 
 function teamsRequest() {
   fetch('https://graph.microsoft.com/v1.0/users?$search=%22displayName:Арсеній%22', {
     method: "GET",

@@ -82,7 +82,7 @@ class Main
 							$result = [
 								'to' => $GLOBALS['uni.user'],
 								'type' => 'message',
-								'value' => 'id: ' . $data['id'] . '    mail: ' . $data['mail'],
+								'value' => 'id аккаунта: ' . $data['id'] . '    email аккаунта: ' . $data['mail'],
 								'keyboard' => [
 									'inline' => true,
 									'buttons' => [
@@ -97,7 +97,7 @@ class Main
 							$result = [
 								'to' => $GLOBALS['uni.user'],
 								'type' => 'message',
-								'value' => 'Создание акка готово ' . $data['id'] 
+								'value' => 'Аккаунт MS Teams успешно ' . $data['id'] 
 								. ' Mail: ' . $data['mail'] 
 								. '  Password: ' . $data['password'] 
 								. '  Display name: ' . $data['displayName']
@@ -292,7 +292,7 @@ class Main
     		'grant_type' => 'client_credentials',
     		'client_id' => 'b12ee5c0-54af-4b8c-afaa-f55aafdaa164',
     		'scope' => 'https://graph.microsoft.com/.default',
-    		'client_secret' => 'Wauu3~~YpoLo89~X-tX8~kwX27e5_5E16X'
+    		'client_secret' => 'Wauu3~~'
 		];
     
 		$response = $this->request('login.microsoftonline.com/8efef98e-4b58-4293-8fbe-408a6973145a/oauth2/v2.0/token', $params);
@@ -319,7 +319,7 @@ class Main
   			'grant_type' => 'refresh_token',
   			'client_id' => 'b12ee5c0-54af-4b8c-afaa-f55aafdaa164',
   			'scope' => 'offline_access User.ReadWrite User.ReadWrite.All User.ManageIdentities.All Directory.ReadWrite.All Directory.AccessAsUser.All',
-  			'client_secret' => 'Wauu3~~YpoLo89~X-tX8~kwX27e5_5E16X',
+  			'client_secret' => 'Wauu3~~',
   			'refresh_token' => $refresh
 		];
 
